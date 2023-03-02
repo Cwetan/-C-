@@ -1,33 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
+using Project.bl.Interfaces;
+using Project.bl.Services;
+using Project.Models.Data;
 
 namespace project_1._1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class AutorController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private readonly IAutorServices _autorService;
+        public AutorController(IAutorServices autorService)
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
+            _autorService = autorService;
         }
+        [HttpGet("GetAll")]
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<Autor> GetAll()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return _autorService.GetAll();
         }
     }
 }
